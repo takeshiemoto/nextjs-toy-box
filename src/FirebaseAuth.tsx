@@ -1,9 +1,9 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+
 import { firebase, FirebaseContext } from "./Firebase";
 
 const useFirebaseAuth = () => {
-  const [initialized, setInitialized] = useState();
+  const [initialized, setInitialized] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [userName, setUserName] = useState("");
   useEffect(() => {
@@ -22,9 +22,9 @@ interface FirebaseAuthProps {
 }
 
 export const FirebaseAuth: React.FC<FirebaseAuthProps> = ({
-  Loading,
-  NotSignedIn,
   children,
+  NotSignedIn,
+  Loading,
 }) => {
   const { initialized, userId, userName } = useFirebaseAuth();
 
@@ -33,7 +33,12 @@ export const FirebaseAuth: React.FC<FirebaseAuthProps> = ({
   } else if (!userId) {
     return <NotSignedIn />;
   } else {
-    return <FirebaseContext.Provider value={{ userId, userName }} />;
+    return (
+      <FirebaseContext.Provider
+        value={{ userId, userName }}
+        children={children}
+      />
+    );
   }
 };
 

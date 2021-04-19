@@ -1,5 +1,3 @@
-import './styles.css';
-
 import { ApolloProvider } from '@apollo/client';
 import { AppProps } from 'next/app';
 import Head from 'next/head';

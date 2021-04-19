@@ -25,6 +25,9 @@
     "with-apollo-e2e": {
       "tags": [],
       "implicitDependencies": ["with-apollo"]
+    },
+    "with-auth": {
+      "tags": []
     }
   }
 }

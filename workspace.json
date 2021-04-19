@@ -94,6 +94,49 @@
           }
         }
       }
+    },
+    "with-auth": {
+      "root": "apps/with-auth",
+      "sourceRoot": "apps/with-auth",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/next:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "root": "apps/with-auth",
+            "outputPath": "dist/apps/with-auth"
+          },
+          "configurations": {
+            "production": {}
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/next:server",
+          "options": {
+            "buildTarget": "with-auth:build",
+            "dev": true
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "with-auth:build:production",
+              "dev": false
+            }
+          }
+        },
+        "export": {
+          "executor": "@nrwl/next:export",
+          "options": {
+            "buildTarget": "with-auth:build:production"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/with-auth/**/*.{ts,tsx,js,jsx}"]
+          }
+        }
+      }
     }
   }
 }

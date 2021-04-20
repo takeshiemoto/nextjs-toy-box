@@ -9,33 +9,47 @@ import React, {
 
 import { Api } from '../Api';
 
-type User = { user: { name: string } } | undefined;
-const AuthContext = createContext<User>(undefined);
+type Session = { id: string; name: string };
+const AuthContext = createContext<{
+  session: Session | undefined;
+  loading: boolean;
+}>({ session: undefined, loading: true });
 
 const AuthProvider: VFC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User>(undefined);
+  const [state, setState] = useState<{
+    session: Session | undefined;
+    loading: boolean;
+  }>({ session: undefined, loading: true });
   useEffect(() => {
     Api.checkLogin().then((res) => {
-      setUser({
-        user: res.user,
+      setState({
+        session: {
+          id: 'xxxyyy',
+          name: res.user.name,
+        },
+        loading: false,
       });
     });
   }, []);
-  return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>;
 };
 
-const useAuth = () => useContext(AuthContext);
+const useSession = () => useContext(AuthContext);
 
 const AuthLayout: VFC<{ children: ReactNode }> = ({ children }) => {
-  const user = useAuth();
+  const session = useSession();
   useEffect(() => {
-    console.log({ user });
-    if (!user) {
-      console.log('Login');
+    console.log({ session });
+    if (!session) {
+      console.log('リダイレクト');
     }
-  }, [user]);
+  }, [session]);
+
+  if (session.loading) {
+    return <div>Loading...</div>;
+  }
 
   return <div>{children}</div>;
 };
 
-export { AuthContext, AuthProvider, useAuth, AuthLayout };
+export { AuthContext, AuthProvider, useSession, AuthLayout };

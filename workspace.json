@@ -3,7 +3,7 @@
   "cli": {
     "defaultCollection": "@nrwl/next"
   },
-  "defaultProject": "with-apollo",
+  "defaultProject": "apollo-server",
   "generators": {
     "@nrwl/react": {
       "application": {
@@ -18,17 +18,59 @@
     }
   },
   "projects": {
-    "with-apollo": {
-      "root": "apps/with-apollo",
-      "sourceRoot": "apps/with-apollo",
+    "apollo-server": {
+      "root": "apps/apollo-server",
+      "sourceRoot": "apps/apollo-server/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/apollo-server",
+            "main": "apps/apollo-server/src/main.ts",
+            "tsConfig": "apps/apollo-server/tsconfig.app.json",
+            "assets": ["apps/apollo-server/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/apollo-server/src/environments/environment.ts",
+                  "with": "apps/apollo-server/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "apollo-server:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/apollo-server/**/*.ts"]
+          }
+        }
+      }
+    },
+    "next-apollo-client": {
+      "root": "apps/next-apollo-client",
+      "sourceRoot": "apps/next-apollo-client",
       "projectType": "application",
       "targets": {
         "build": {
           "executor": "@nrwl/next:build",
           "outputs": ["{options.outputPath}"],
           "options": {
-            "root": "apps/with-apollo",
-            "outputPath": "dist/apps/with-apollo"
+            "root": "apps/next-apollo-client",
+            "outputPath": "dist/apps/next-apollo-client"
           },
           "configurations": {
             "production": {}
@@ -37,12 +79,12 @@
         "serve": {
           "executor": "@nrwl/next:server",
           "options": {
-            "buildTarget": "with-apollo:build",
+            "buildTarget": "next-apollo-client:build",
             "dev": true
           },
           "configurations": {
             "production": {
-              "buildTarget": "with-apollo:build:production",
+              "buildTarget": "next-apollo-client:build:production",
               "dev": false
             }
           }
@@ -50,90 +92,13 @@
         "export": {
           "executor": "@nrwl/next:export",
           "options": {
-            "buildTarget": "with-apollo:build:production"
-          }
-        },
-        "test": {
-          "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/with-apollo"],
-          "options": {
-            "jestConfig": "apps/with-apollo/jest.config.js",
-            "passWithNoTests": true
+            "buildTarget": "next-apollo-client:build:production"
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/with-apollo/**/*.{ts,tsx,js,jsx}"]
-          }
-        }
-      }
-    },
-    "with-apollo-e2e": {
-      "root": "apps/with-apollo-e2e",
-      "sourceRoot": "apps/with-apollo-e2e/src",
-      "projectType": "application",
-      "targets": {
-        "e2e": {
-          "executor": "@nrwl/cypress:cypress",
-          "options": {
-            "cypressConfig": "apps/with-apollo-e2e/cypress.json",
-            "tsConfig": "apps/with-apollo-e2e/tsconfig.e2e.json",
-            "devServerTarget": "with-apollo:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "with-apollo:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["apps/with-apollo-e2e/**/*.{js,ts}"]
-          }
-        }
-      }
-    },
-    "with-auth": {
-      "root": "apps/with-auth",
-      "sourceRoot": "apps/with-auth",
-      "projectType": "application",
-      "targets": {
-        "build": {
-          "executor": "@nrwl/next:build",
-          "outputs": ["{options.outputPath}"],
-          "options": {
-            "root": "apps/with-auth",
-            "outputPath": "dist/apps/with-auth"
-          },
-          "configurations": {
-            "production": {}
-          }
-        },
-        "serve": {
-          "executor": "@nrwl/next:server",
-          "options": {
-            "buildTarget": "with-auth:build",
-            "dev": true
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "with-auth:build:production",
-              "dev": false
-            }
-          }
-        },
-        "export": {
-          "executor": "@nrwl/next:export",
-          "options": {
-            "buildTarget": "with-auth:build:production"
-          }
-        },
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["apps/with-auth/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": ["apps/next-apollo-client/**/*.{ts,tsx,js,jsx}"]
           }
         }
       }

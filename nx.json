@@ -19,14 +19,10 @@
     }
   },
   "projects": {
-    "with-apollo": {
+    "apollo-server": {
       "tags": []
     },
-    "with-apollo-e2e": {
-      "tags": [],
-      "implicitDependencies": ["with-apollo"]
-    },
-    "with-auth": {
+    "next-apollo-client": {
       "tags": []
     }
   }

@@ -1,7 +1,7 @@
-export const resolvers = {
+import { Resolvers } from './genereted';
+
+export const resolvers: Resolvers = {
   Query: {
-    message: () => {
-      return "Hello world";
-    }
-  }
-}
+    message: () => 'Hi Takeshi',
+  },
+};

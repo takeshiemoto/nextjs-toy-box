@@ -9,10 +9,10 @@ const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  playground: true
-})
+  playground: true,
+});
 
-server.applyMiddleware({ app })
+server.applyMiddleware({ app });
 
 const port = process.env.port || 3333;
 app

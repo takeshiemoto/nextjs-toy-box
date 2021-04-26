@@ -1,0 +1,7 @@
+overwrite: true
+generates:
+  apps/apollo-server/src/genereted.ts:
+    schema: apps/apollo-server/src/typeDefs.ts
+    plugins:
+      - typescript
+      - typescript-resolvers

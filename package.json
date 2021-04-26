@@ -24,7 +24,8 @@
     "update": "nx migrate latest",
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "help": "nx help",
+    "gql-codegen": "graphql-codegen --config apps/apollo-server/codegen.yaml"
   },
   "private": true,
   "dependencies": {
@@ -47,6 +48,8 @@
     "@babel/preset-env": "7.12.13",
     "@babel/preset-react": "7.12.13",
     "@babel/preset-typescript": "7.12.13",
+    "@graphql-codegen/cli": "^1.21.4",
+    "@graphql-codegen/typescript-resolvers": "^1.19.1",
     "@nrwl/cli": "12.0.7",
     "@nrwl/cypress": "12.0.7",
     "@nrwl/eslint-plugin-nx": "12.0.7",

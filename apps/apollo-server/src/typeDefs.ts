@@ -6,7 +6,6 @@ export const typeDefs = gql`
     name: String!
   }
   type AuthPayload {
-    user: User!
     token: String!
   }
   input SignInInput {
@@ -14,6 +13,7 @@ export const typeDefs = gql`
     password: String!
   }
   type Mutation {
+    signUp(data: SignInInput): AuthPayload!
     signIn(data: SignInInput): AuthPayload!
   }
   type Query {

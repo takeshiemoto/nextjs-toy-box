@@ -1,6 +1,7 @@
 import { ApolloServer } from 'apollo-server-express';
 import * as express from 'express';
 
+import { JWT_EXPIRES_IN, JWT_SECRET } from './environments';
 import { resolvers } from './resolvers';
 import { typeDefs } from './typeDefs';
 
@@ -10,6 +11,14 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   playground: true,
+  context: async () => {
+    return {
+      jwt: {
+        secret: JWT_SECRET,
+        expiresIn: JWT_EXPIRES_IN,
+      },
+    };
+  },
 });
 
 server.applyMiddleware({ app });

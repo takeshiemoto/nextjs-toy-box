@@ -25,12 +25,17 @@
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
     "help": "nx help",
-    "gql-codegen": "graphql-codegen --config apps/apollo-server/codegen.yaml"
+    "gql-codegen": "graphql-codegen --config apps/apollo-server/codegen.yaml",
+    "gql-codegen:watch": "graphql-codegen --config apps/apollo-server/codegen.yaml --watch 'apps/apollo-server/src/typeDefs.ts'"
   },
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.3.15",
+    "@types/bcrypt": "^3.0.1",
+    "@types/jsonwebtoken": "^8.5.1",
+    "@types/uuid": "^8.3.0",
     "apollo-server-express": "^2.23.0",
+    "bcrypt": "^5.0.1",
     "core-js": "^3.6.5",
     "document-register-element": "1.13.1",
     "express": "4.17.1",

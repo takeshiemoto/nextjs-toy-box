@@ -1,26 +1,43 @@
+import { AuthenticationError } from 'apollo-server-express';
 import { sign } from 'jsonwebtoken';
 
+import { User } from './app/User';
 import { Resolvers } from './genereted';
-
-const SECRET = 'MY_SECRET';
 
 export const resolvers: Resolvers = {
   Query: {
-    message: () => 'Hi Takeshi',
+    message: () => {
+      return `Hello world .`;
+    },
   },
   Mutation: {
-    signIn: (parent, { data: { email, password } }) => {
-      console.log(email, password);
-      const token = sign({ user: `${email}` }, SECRET, {
-        expiresIn: 2 * 60,
-      });
+    signUp: async (parent, { data }, { jwt }) => {
+      const { user } = await User.create(data);
       return {
-        user: {
-          name: 'Takeshi',
-          id: 'xxxxyyy',
-        },
-        token,
+        token: createToken(user, jwt),
+      };
+    },
+    signIn: async (parent, { data }, { jwt }) => {
+      const { user } = await User.findByEmailAndPassword(
+        data.email,
+        data.password
+      );
+      if (!user) {
+        throw new AuthenticationError('auth error');
+      }
+      return {
+        token: createToken(user, jwt),
       };
     },
   },
+};
+
+const createToken = (
+  payload: { email: string; password: string },
+  jwt: {
+    secret: string;
+    expiresIn: string | number;
+  }
+) => {
+  return sign(payload, jwt.secret, { expiresIn: jwt.expiresIn });
 };

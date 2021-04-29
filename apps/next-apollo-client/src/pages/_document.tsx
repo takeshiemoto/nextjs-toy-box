@@ -1,20 +1,22 @@
 import createEmotionServer from '@emotion/server/create-instance';
-import { ServerStyleSheets } from '@material-ui/core';
-import { NextPageContext } from 'next';
-import { RenderPage } from 'next/dist/next-server/lib/utils';
-import Document, { Head, Html, Main, NextScript } from 'next/document';
+import { ServerStyleSheets } from '@material-ui/core/styles';
+import Document, {
+  DocumentContext,
+  Head,
+  Html,
+  Main,
+  NextScript,
+} from 'next/document';
 import React, { ReactElement } from 'react';
 
-import { cache } from './_app';
+import { cache, theme } from './_app';
 
 const { extractCritical } = createEmotionServer(cache);
 
 export default class CustomDocument extends Document<{
   styleTags: ReactElement[];
 }> {
-  static async getInitialProps(
-    ctx: NextPageContext & { renderPage: RenderPage }
-  ) {
+  static async getInitialProps(ctx: DocumentContext) {
     const sheets = new ServerStyleSheets();
     const originalRenderPage = ctx.renderPage;
 
@@ -28,6 +30,7 @@ export default class CustomDocument extends Document<{
 
     return {
       ...initialProps,
+      // Styles fragment is rendered after the app and page rendering finish.
       styles: [
         ...React.Children.toArray(initialProps.styles),
         sheets.getStyleElement(),
@@ -43,9 +46,10 @@ export default class CustomDocument extends Document<{
 
   render() {
     return (
-      <Html lang={'ja'}>
+      <Html lang="en">
         <Head>
-          {this.props.styleTags}
+          {/* PWA primary color */}
+          <meta name="theme-color" content={theme.palette.primary.main} />
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"

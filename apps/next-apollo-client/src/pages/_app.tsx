@@ -1,4 +1,4 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -7,6 +7,7 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 import React from 'react';
 
+import { AuthConsumer } from '../auth';
 import { Layout } from '../components/layout';
 
 export const cache = createCache({ key: 'css', prepend: true });
@@ -37,7 +38,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
 
   return (
     <CacheProvider value={cache}>
-      <ApolloProvider client={client}>
+      <AuthConsumer>
         <Head>
           <title>Welcome to next-apollo-client!</title>
           <meta
@@ -51,7 +52,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
             <Component {...pageProps} />
           </Layout>
         </ThemeProvider>
-      </ApolloProvider>
+      </AuthConsumer>
     </CacheProvider>
   );
 }

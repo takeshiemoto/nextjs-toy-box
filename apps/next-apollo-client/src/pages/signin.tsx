@@ -6,15 +6,26 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
+import { useJwt } from '../auth';
 import { useSignInMutation } from '../graphql/generated';
 
 type FormType = { email: string; password: string };
 
 const SignIn = () => {
+  const router = useRouter();
+  const { setToken, token } = useJwt();
   const [singIn] = useSignInMutation();
+
+  useEffect(() => {
+    if (token) {
+      router.push('/');
+      return;
+    }
+  }, [router, token]);
 
   const { handleSubmit, control } = useForm<FormType>({
     defaultValues: {
@@ -31,7 +42,7 @@ const SignIn = () => {
           password,
         },
       });
-      console.log(result);
+      setToken(result.data.signIn.token);
     } catch (e) {
       console.error(e);
     }

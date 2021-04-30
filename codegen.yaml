@@ -1,0 +1,16 @@
+overwrite: true
+generates:
+  apps/apollo-server/src/genereted.ts:
+    schema: apps/apollo-server/src/typeDefs.ts
+    config:
+      contextType: ./context#Context
+    plugins:
+      - typescript
+      - typescript-resolvers
+  apps/next-apollo-client/src/graphql/generated.tsx:
+    schema: apps/apollo-server/src/typeDefs.ts
+    documents: apps/next-apollo-client/src/graphql/operations.graphql
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo

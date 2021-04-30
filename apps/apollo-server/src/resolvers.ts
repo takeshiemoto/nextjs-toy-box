@@ -1,8 +1,11 @@
+import { PrismaClient } from '@prisma/client';
 import { AuthenticationError } from 'apollo-server-express';
+import { compare, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 
-import { User } from './app/User';
 import { Resolvers } from './genereted';
+
+const prisma = new PrismaClient();
 
 export const resolvers: Resolvers = {
   Query: {
@@ -12,21 +15,30 @@ export const resolvers: Resolvers = {
   },
   Mutation: {
     signUp: async (parent, { data }, { jwt }) => {
-      const { user } = await User.create(data);
+      const result = await prisma.user.create({
+        data: {
+          email: data.email,
+          password: await hash(data.password, 10),
+        },
+      });
       return {
-        token: createToken(user, jwt),
+        token: createToken(result, jwt),
       };
     },
     signIn: async (parent, { data }, { jwt }) => {
-      const { user } = await User.findByEmailAndPassword(
-        data.email,
-        data.password
-      );
-      if (!user) {
-        throw new AuthenticationError('auth error');
+      const result = await prisma.user.findUnique({
+        where: {
+          email: data.email,
+        },
+      });
+
+      if (!(await compare(data.password, result.password))) {
+        throw new AuthenticationError(
+          'ユーザーが存在しないかパスワードが間違っています'
+        );
       }
       return {
-        token: createToken(user, jwt),
+        token: createToken(result, jwt),
       };
     },
   },

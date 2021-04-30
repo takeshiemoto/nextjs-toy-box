@@ -40,3 +40,6 @@ Thumbs.db
 
 # Docker
 pgsql-data
+
+# Environment
+.env

@@ -17,15 +17,15 @@ type FormType = { email: string; password: string };
 
 const SignIn = () => {
   const router = useRouter();
-  const { setToken, token } = useJwt();
+  const { setToken, jwt } = useJwt();
   const [singIn] = useSignInMutation();
 
   useEffect(() => {
-    if (token) {
+    if (jwt) {
       router.push('/');
       return;
     }
-  }, [router, token]);
+  }, [router, jwt]);
 
   const { handleSubmit, control } = useForm<FormType>({
     defaultValues: {

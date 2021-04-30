@@ -3,3 +3,7 @@ mutation SignIn($email: String!, $password: String!) {
     token
   }
 }
+
+query Message {
+  message
+}

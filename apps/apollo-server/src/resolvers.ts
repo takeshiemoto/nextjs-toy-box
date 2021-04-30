@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { AuthenticationError } from 'apollo-server-express';
 import { compare, hash } from 'bcrypt';
 import { sign, verify } from 'jsonwebtoken';
+import { v4 as uuidv4 } from 'uuid';
 
 import { Resolvers } from './genereted';
 
@@ -10,7 +11,6 @@ const prisma = new PrismaClient();
 export const resolvers: Resolvers = {
   Query: {
     message: (parent, args, { token, jwt }) => {
-      console.log(token, jwt);
       try {
         verify(token, jwt.secret);
         return `認証が必要なデータの取得に成功しました！`;
@@ -43,6 +43,18 @@ export const resolvers: Resolvers = {
           'ユーザーが存在しないかパスワードが間違っています'
         );
       }
+
+      const refreshToken = uuidv4();
+      const jwtTokenExpiry = new Date(new Date().getTime() + jwt.expiresIn);
+      const updateResults = await prisma.user.updateMany({
+        data: {
+          expiresAt: jwtTokenExpiry,
+          refreshToken,
+        },
+      });
+
+      console.log(updateResults);
+
       return {
         token: createToken(result, jwt),
       };

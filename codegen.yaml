@@ -3,12 +3,17 @@ generates:
   apps/apollo-server/src/genereted.ts:
     schema: apps/apollo-server/src/typeDefs.ts
     config:
+      scalars:
+        DateTime: Date
       contextType: ./context#Context
     plugins:
       - typescript
       - typescript-resolvers
   apps/next-apollo-client/src/graphql/generated.tsx:
     schema: apps/apollo-server/src/typeDefs.ts
+    config:
+      scalars:
+        DateTime: Date
     documents: apps/next-apollo-client/src/graphql/operations.graphql
     plugins:
       - typescript

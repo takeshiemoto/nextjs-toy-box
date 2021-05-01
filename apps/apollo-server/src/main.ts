@@ -11,13 +11,15 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   playground: true,
-  context: async ({ req }) => {
+  context: async ({ req, res }) => {
     return {
       token: <string>req.headers['x-token'],
       jwt: {
         secret: JWT_SECRET,
         expiresIn: JWT_EXPIRES_IN,
       },
+      res: res,
+      req: req,
     };
   },
 });

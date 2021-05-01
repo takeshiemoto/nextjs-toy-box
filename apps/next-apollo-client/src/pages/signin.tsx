@@ -17,7 +17,7 @@ type FormType = { email: string; password: string };
 
 const SignIn = () => {
   const router = useRouter();
-  const { setToken, jwt } = useJwt();
+  const { setJwt, jwt } = useJwt();
   const [singIn] = useSignInMutation();
 
   useEffect(() => {
@@ -42,7 +42,10 @@ const SignIn = () => {
           password,
         },
       });
-      setToken(result.data.signIn.token);
+      setJwt({
+        token: result.data.signIn.token,
+        expiry: result.data.signIn.tokenExpiry,
+      });
     } catch (e) {
       console.error(e);
     }

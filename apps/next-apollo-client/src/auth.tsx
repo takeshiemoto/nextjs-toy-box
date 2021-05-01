@@ -15,21 +15,21 @@ import {
   VFC,
 } from 'react';
 
-type Jwt = { token?: string };
+type Jwt = { token?: string; expiry?: Date };
 
 const AuthContext = createContext<
-  { jwt: Jwt; setToken: (token: string) => void } | undefined
+  { jwt: Jwt; setJwt: (jwt: Jwt) => void } | undefined
 >(undefined);
 
 export const AuthProvider: VFC<{ children: ReactNode }> = ({ children }) => {
   const [value, setValue] = useState<Jwt | undefined>(undefined);
 
-  const setToken = useCallback((token: string) => {
-    setValue({ token });
+  const setJwt = useCallback(({ token, expiry }: Jwt) => {
+    setValue({ token, expiry });
   }, []);
 
   return (
-    <AuthContext.Provider value={{ jwt: value, setToken }}>
+    <AuthContext.Provider value={{ jwt: value, setJwt }}>
       {children}
     </AuthContext.Provider>
   );
@@ -41,7 +41,7 @@ const AuthConsumer: VFC<{ children: ReactNode }> = ({ children }) => {
       <AuthContext.Consumer>
         {({ jwt }) => {
           const httpLink = new HttpLink({
-            uri: 'http://localhost:3333/graphql',
+            uri: '/graphql',
           });
 
           const authMiddleware = new ApolloLink((operation, forward) => {

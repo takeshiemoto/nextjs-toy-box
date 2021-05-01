@@ -31,7 +31,7 @@ export const resolvers: Resolvers = {
         token: createToken(result, jwt),
       };
     },
-    signIn: async (parent, { data }, { jwt }) => {
+    signIn: async (parent, { data }, { jwt, res }) => {
       const result = await prisma.user.findUnique({
         where: {
           email: data.email,
@@ -46,17 +46,24 @@ export const resolvers: Resolvers = {
 
       const refreshToken = uuidv4();
       const jwtTokenExpiry = new Date(new Date().getTime() + jwt.expiresIn);
-      const updateResults = await prisma.user.updateMany({
+
+      await prisma.user.updateMany({
         data: {
           expiresAt: jwtTokenExpiry,
           refreshToken,
         },
       });
 
-      console.log(updateResults);
+      res.cookie('refresh_token', refreshToken, {
+        maxAge: jwt.expiresIn,
+        httpOnly: true,
+        secure: false,
+      });
 
       return {
         token: createToken(result, jwt),
+        tokenExpiry: jwtTokenExpiry,
+        refreshToken,
       };
     },
   },

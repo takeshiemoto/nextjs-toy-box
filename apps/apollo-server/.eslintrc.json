@@ -7,7 +7,9 @@
       "parserOptions": {
         "project": ["apps/apollo-server/tsconfig.*?.json"]
       },
-      "rules": {}
+      "rules": {
+        "@typescript-eslint/ban-types": "off"
+      }
     },
     {
       "files": ["*.ts", "*.tsx"],

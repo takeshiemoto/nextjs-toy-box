@@ -1,0 +1,19 @@
+mutation SignIn($email: String!, $password: String!) {
+  signIn(data: { email: $email, password: $password }) {
+    token
+    tokenExpiry
+    refreshToken
+  }
+}
+
+mutation RefreshToken {
+  refreshToken {
+    token
+    tokenExpiry
+    refreshToken
+  }
+}
+
+query Message {
+  message
+}

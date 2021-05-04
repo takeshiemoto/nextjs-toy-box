@@ -38,6 +38,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   signUp: AuthPayload;
   signIn: AuthPayload;
+  refreshToken: AuthPayload;
 };
 
 export type MutationSignUpArgs = {
@@ -240,6 +241,11 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationSignInArgs, never>
+  >;
+  refreshToken?: Resolver<
+    ResolversTypes['AuthPayload'],
+    ParentType,
+    ContextType
   >;
 };
 

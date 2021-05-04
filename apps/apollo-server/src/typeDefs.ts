@@ -18,6 +18,7 @@ export const typeDefs = gql`
   type Mutation {
     signUp(data: SignInInput): AuthPayload!
     signIn(data: SignInInput): AuthPayload!
+    refreshToken: AuthPayload!
   }
   type Query {
     message: String!

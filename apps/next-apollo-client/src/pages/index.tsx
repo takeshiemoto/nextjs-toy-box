@@ -1,28 +1,25 @@
-import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import { Box, Typography } from '@material-ui/core';
+import React from 'react';
 
-import { useJwt } from '../auth';
 import { useMessageQuery } from '../graphql/generated';
+import { useRequireAuth } from '../useRequireAuth';
 
 export function Index() {
-  const router = useRouter();
-  const { jwt } = useJwt();
-  useEffect(() => {
-    if (!jwt) {
-      router.push('/signin');
-    }
-  }, [router, jwt]);
+  useRequireAuth();
 
-  const { data, loading, error } = useMessageQuery();
+  const { data, loading } = useMessageQuery();
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div>Error Page</div>;
-  }
-
-  return <div>{data.message}</div>;
+  return (
+    <Box sx={{ m: 1 }}>
+      {!loading && data && (
+        <Typography variant={'body1'}>{data.message}</Typography>
+      )}
+    </Box>
+  );
 }
+
 export default Index;

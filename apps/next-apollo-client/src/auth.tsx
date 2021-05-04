@@ -18,14 +18,14 @@ import {
 type Jwt = { token?: string; expiry?: Date };
 
 const AuthContext = createContext<
-  { jwt: Jwt; setJwt: (jwt: Jwt) => void } | undefined
+  { jwt?: Jwt; setJwt?: (jwt?: Jwt) => void } | undefined | null
 >(undefined);
 
 export const AuthProvider: VFC<{ children: ReactNode }> = ({ children }) => {
   const [value, setValue] = useState<Jwt | undefined>(undefined);
 
-  const setJwt = useCallback(({ token, expiry }: Jwt) => {
-    setValue({ token, expiry });
+  const setJwt = useCallback((jwt: Jwt) => {
+    setValue(jwt);
   }, []);
 
   return (
@@ -68,6 +68,13 @@ const AuthConsumer: VFC<{ children: ReactNode }> = ({ children }) => {
   );
 };
 
-const useJwt = () => useContext(AuthContext);
+const useJwt = () => {
+  const ctx = useContext(AuthContext);
+  return {
+    loading: ctx.jwt === undefined,
+    jwt: ctx.jwt,
+    setJwt: ctx.setJwt,
+  };
+};
 
 export { AuthConsumer, useJwt };

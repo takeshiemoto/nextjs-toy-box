@@ -1,4 +1,3 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -7,6 +6,7 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 import React from 'react';
 
+import { AppInit } from '../AppInit';
 import { AuthConsumer } from '../auth';
 import { Layout } from '../components/layout';
 
@@ -23,11 +23,6 @@ export const theme = createMuiTheme({
   },
 });
 
-const client = new ApolloClient({
-  uri: 'http://localhost:3333/graphql',
-  cache: new InMemoryCache(),
-});
-
 function CustomApp({ Component, pageProps }: AppProps) {
   React.useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
@@ -39,19 +34,21 @@ function CustomApp({ Component, pageProps }: AppProps) {
   return (
     <CacheProvider value={cache}>
       <AuthConsumer>
-        <Head>
-          <title>Welcome to next-apollo-client!</title>
-          <meta
-            name={'viewport'}
-            content={'initial-scale=1, width=device-width'}
-          />
-        </Head>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </ThemeProvider>
+        <AppInit>
+          <Head>
+            <title>Welcome to next-apollo-client!</title>
+            <meta
+              name={'viewport'}
+              content={'initial-scale=1, width=device-width'}
+            />
+          </Head>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ThemeProvider>
+        </AppInit>
       </AuthConsumer>
     </CacheProvider>
   );

@@ -6,31 +6,25 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { useJwt } from '../auth';
 import { useSignInMutation } from '../graphql/generated';
+import { useNoAuth } from '../useNoAuth';
 
 type FormType = { email: string; password: string };
 
 const SignIn = () => {
-  const router = useRouter();
-  const { setJwt, jwt } = useJwt();
-  const [singIn] = useSignInMutation();
+  useNoAuth();
 
-  useEffect(() => {
-    if (jwt) {
-      router.push('/');
-      return;
-    }
-  }, [router, jwt]);
+  const [singIn] = useSignInMutation();
+  const { setJwt, jwt } = useJwt();
 
   const { handleSubmit, control } = useForm<FormType>({
     defaultValues: {
-      email: '',
-      password: '',
+      email: 'takeshi.emoto@jointcrew.co.jp',
+      password: 'helloworld',
     },
   });
 
@@ -58,6 +52,7 @@ const SignIn = () => {
         justifyContent: 'center',
         alignItems: 'center',
         height: 'calc(100vh - 64px)',
+        flexDirection: 'column',
       }}
     >
       <Card sx={{ width: 500 }}>
@@ -111,6 +106,10 @@ const SignIn = () => {
           </Box>
         </CardContent>
       </Card>
+      {jwt && (
+        <Box sx={{ width: 500, my: 2, overflow: 'scroll' }}>{jwt.token}</Box>
+      )}
+      {jwt && <Box sx={{ width: 500, my: 1 }}>{jwt.expiry}</Box>}
     </Box>
   );
 };

@@ -6,6 +6,14 @@ mutation SignIn($email: String!, $password: String!) {
   }
 }
 
+mutation RefreshToken {
+  refreshToken {
+    token
+    tokenExpiry
+    refreshToken
+  }
+}
+
 query Message {
   message
 }

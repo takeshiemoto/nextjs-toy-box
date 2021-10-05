@@ -1,5 +1,5 @@
 import { AuthenticationError } from 'apollo-server-express';
-import { verify } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 
 import { JWT_SECRET } from './environments';
 
@@ -12,4 +12,18 @@ export const getMe = async (req: Request) => {
       throw new AuthenticationError('You session expired. Sign in again.');
     }
   }
+};
+
+export const generateJwtToken = (
+  payload: { email: string; password: string },
+  jwt: {
+    secret: string;
+    expiresIn: number;
+  }
+) => {
+  return sign(payload, jwt.secret, { expiresIn: jwt.expiresIn });
+};
+
+export const generateJwtTokenExpiry = (): Date => {
+  return new Date();
 };

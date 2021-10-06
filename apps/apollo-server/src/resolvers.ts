@@ -4,8 +4,8 @@ import { compare, hash } from 'bcrypt';
 import { sign, verify } from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Resolvers } from './genereted';
 import { generateJwtToken } from './functions';
+import { Resolvers } from './genereted';
 
 const prisma = new PrismaClient();
 

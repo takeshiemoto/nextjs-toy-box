@@ -102,6 +102,50 @@
           }
         }
       }
+    },
+    "rhf": {
+      "root": "apps/rhf",
+      "sourceRoot": "apps/rhf",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/next:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "root": "apps/rhf",
+            "outputPath": "dist/apps/rhf"
+          },
+          "configurations": {
+            "production": {}
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/next:server",
+          "options": {
+            "buildTarget": "rhf:build",
+            "dev": true
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "rhf:build:production",
+              "dev": false
+            }
+          }
+        },
+        "export": {
+          "executor": "@nrwl/next:export",
+          "options": {
+            "buildTarget": "rhf:build:production"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/rhf/**/*.{ts,tsx,js,jsx}"]
+          }
+        }
+      }
     }
   }
 }

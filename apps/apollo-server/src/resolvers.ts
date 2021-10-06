@@ -4,6 +4,7 @@ import { compare, hash } from 'bcrypt';
 import { sign, verify } from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 
+import { generateJwtToken } from './functions';
 import { Resolvers } from './genereted';
 
 const prisma = new PrismaClient();
@@ -57,7 +58,7 @@ export const resolvers: Resolvers = {
       });
 
       return {
-        token: createToken(result, jwt),
+        token: generateJwtToken(result, jwt),
         tokenExpiry: jwtTokenExpiry,
         refreshToken: newRefreshToken,
       };
@@ -70,7 +71,7 @@ export const resolvers: Resolvers = {
         },
       });
       return {
-        token: createToken(result, jwt),
+        token: generateJwtToken(result, jwt),
       };
     },
     signIn: async (parent, { data }, { jwt, res }) => {
@@ -106,20 +107,10 @@ export const resolvers: Resolvers = {
       });
 
       return {
-        token: createToken(result, jwt),
+        token: generateJwtToken(result, jwt),
         tokenExpiry: jwtTokenExpiry,
         refreshToken,
       };
     },
   },
-};
-
-const createToken = (
-  payload: { email: string; password: string },
-  jwt: {
-    secret: string;
-    expiresIn: string | number;
-  }
-) => {
-  return sign(payload, jwt.secret, { expiresIn: jwt.expiresIn });
 };

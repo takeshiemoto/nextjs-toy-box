@@ -15,7 +15,7 @@ const server = new ApolloServer({
   playground: true,
   context: async (ctx) => {
     return {
-      token: <string>ctx.req.headers['x-token'],
+      token: ctx.req.headers['x-token'],
       jwt: {
         secret: JWT_SECRET,
         expiresIn: JWT_EXPIRES_IN,

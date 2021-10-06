@@ -6,7 +6,7 @@ export const TableHeader: VFC = () => {
   return (
     <Thead>
       <Tr>
-        <Th>日付</Th>
+        <Th width={2}>日付</Th>
         {rooms.map((value) => (
           <Th key={value}>{value}</Th>
         ))}

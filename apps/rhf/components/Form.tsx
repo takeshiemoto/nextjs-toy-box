@@ -21,7 +21,7 @@ export const Form: VFC<Props> = ({ control, submit }) => {
         <Tbody>
           {fields.map((value, parentIndex) => (
             <Tr key={value.id}>
-              <Td width={6}>{value.date}</Td>
+              <Td width={2}>{value.date}</Td>
               {value.rooms.map((r, childIndex) => (
                 <StaffForm
                   key={r.id}
